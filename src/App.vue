@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <p>To start analysing your emotion realtime click the start button or upload a picture.</p>
     <div class="control">
       <el-button type="success" @click="start" :loading="loading">Start</el-button>
       <el-button type="danger" @click="stop">Stop</el-button>
@@ -51,6 +52,25 @@
         </el-collapse-item>
       </el-collapse>
     </div>
+    <div class="uploader">
+      <div>
+        <h2>Results:</h2>
+        <h1 class="imoji">{{imgImoji}}</h1>
+      </div>
+      <canvas id="image_canvas"></canvas>
+      <el-upload
+        v-loading="imgLoading"
+        class="avatar-uploader"
+        drag
+        action="https://formspree.io/your@email.com"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">Drop your image here or <em>click to upload</em></div>
+        <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 2MB</div>
+      </el-upload>
+    </div>
     <footer><a href="https://github.com/gimyboya/real-imoji" target="blank">Github</a></footer>
   </div>
 </template>
@@ -85,6 +105,7 @@ export default {
   data () {
     return {
       detector: null,
+      imageDetector: null,
       loading: false,
       activeNames: ['0'],
       color: '#409EFF',
@@ -122,6 +143,9 @@ export default {
       smile: 0,
       smirk: 0,
       upperLipRaise: 0,
+      imageUrl: '',
+      imgImoji: '',
+      imgLoading: true,
     }
   },
   mounted() {
@@ -139,6 +163,8 @@ export default {
 
     //Construct a FrameDetector and specify the image width / height and face detector mode.
     this.detector = new affdex.CameraDetector(divRoot, width, height, FACE_MODE);
+    // for uploaded images
+    this.imageDetector = new affdex.PhotoDetector(FACE_MODE);
 
     //Enable detection of all Expressions, Emotions and Emojis classifiers.
     this.detector.detectAllEmotions();
@@ -146,17 +172,30 @@ export default {
     this.detector.detectAllEmojis();
     this.detector.detectAllAppearance();
 
+    this.imageDetector.detectAllEmotions();
+    this.imageDetector.detectAllExpressions();
+    this.imageDetector.detectAllEmojis();
+    this.imageDetector.detectAllAppearance();
+
 
     //Add a callback to notify when the detector is initialized and ready for runing.
     this.detector.addEventListener("onInitializeSuccess", function() {
       that.$message({
-        message: 'Detection is initialized!',
+        message: 'Real time process is initialized!',
         type: 'success'
       });
       that.loading = false;
       //Display canvas instead of video feed because we want to draw the feature points on it
       $("#face_video_canvas").css("display", "block");
       $("#face_video").css("display", "none");
+    });
+
+    this.imageDetector.addEventListener("onInitializeSuccess", function() {
+      that.$message({
+        message: 'Image process is initialized!',
+        type: 'success'
+      });
+       that.imgLoading = false;
     });
 
     this.detector.addEventListener("onWebcamConnectSuccess", function() {
@@ -180,7 +219,6 @@ export default {
     //Faces object contains probabilities for all the different expressions, emotions and appearance metrics
     this.detector.addEventListener("onImageResultsSuccess", function(faces, image, timestamp) {
       if(faces.length > 0) {
-        console.log(faces);
         // draw the feature points
         drawFeaturePoints(that, image, faces[0].emojis.dominantEmoji, faces[0].featurePoints);
         // appearance
@@ -223,6 +261,12 @@ export default {
       }
     });
 
+    this.imageDetector.addEventListener("onImageResultsSuccess", function(faces, image, timestamp) {
+      that.imgImoji = faces[0].emojis.dominantEmoji;
+    });
+
+    this.imageDetector.start();
+
   },
   methods: {
     start(){
@@ -252,8 +296,41 @@ export default {
           type: 'success'
         });
       }
-    }
-  }
+    },
+
+    handleAvatarSuccess(res, file) {
+      const that = this;
+
+      this.imageUrl = URL.createObjectURL(file.raw);
+
+      const img = new Image();
+      img.src = this.imageUrl;
+
+      let context = $('#image_canvas')[0].getContext("2d");
+
+      img.onload = function() {
+        context.canvas.width = this.width;                    // handle async image loading
+        context.canvas.height = this.height;                    // handle async image loading
+        URL.revokeObjectURL(this.src);             // free memory held by Object URL
+        context.drawImage(this, 0, 0); // draw image onto canvas (lazy method™)
+        that.imageDetector.process(context.getImageData(0, 0, this.width, this.height), 0);
+      }; 
+
+    },
+
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('Picture must be JPG or PNG format!');
+      }
+      if (!isLt2M) {
+        this.$message.error('Picture size can not exceed 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+  },
 }
 </script>
 
@@ -310,6 +387,36 @@ a {
 .el-collapse-item__content > div {
   margin-left: 20px;
 }
+
+.uploader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+
+  .imoji {
+    font-size: 10em;
+  }
 
 footer {
   display: flex;
