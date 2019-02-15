@@ -7,7 +7,7 @@
       <el-color-picker v-model="color"></el-color-picker>
     </div>
     <div class="container">
-      <div id="canvas" v-loading="loading"></div>
+      <div id="canvas" :loading="loading"></div>
       <el-collapse v-model="activeNames">
         <el-collapse-item title="appearance" name="1">
           <div>Gender: {{gender}}</div>
@@ -196,6 +196,7 @@ export default {
   },
   mounted() {
     const that = this
+    console.log(this.$loading)
     const divRoot = $('#canvas')[0]
     const width = 640
     const height = 480
@@ -227,6 +228,13 @@ export default {
       $('#face_video_canvas').css('display', 'block')
       $('#face_video').css('display', 'none')
     })
+    //Add a callback to notify when the detector has failed to load.
+    this.detector.addEventListener('onInitializeFailure', function() {
+      that.$message({
+        message: 'Failed to load correctly',
+        type: 'error',
+      })
+    })
 
     this.detector.addEventListener('onWebcamConnectSuccess', function() {
       that.$notify({
@@ -236,7 +244,8 @@ export default {
       })
     })
 
-    this.detector.addEventListener('onWebcamConnectFailure', function() {
+    this.detector.addEventListener('onWebcamConnectFailure', function(e) {
+      console.log(e.message)
       that.$notify({
         title: 'Failure',
         message: 'Webcam access denied',
