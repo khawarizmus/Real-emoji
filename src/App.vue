@@ -9,111 +9,9 @@
     <div class="container">
       <div id="canvas" :loading="loading"></div>
       <el-collapse v-model="activeNames">
-        <el-collapse-item title="appearance" name="1">
-          <div>Gender: {{gender}}</div>
-          <div>Age: {{age}}</div>
-          <div>Ethnicity: {{ethnicity}}</div>
-          <div>Glasses: {{glasses}}</div>
-        </el-collapse-item>
-        <el-collapse-item title="emotions" name="2">
-          <div>Anger
-            <el-progress
-              :text-inside="true"
-              :stroke-width="18"
-              :percentage="anger"
-              status="exception"
-            ></el-progress>
-          </div>
-          <div>Contempt
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="contempt"></el-progress>
-          </div>
-          <div>Disgust
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="disgust"></el-progress>
-          </div>
-          <div>Engagement
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="engagement"></el-progress>
-          </div>
-          <div>Fear
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="fear"></el-progress>
-          </div>
-          <div>Joy
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="joy" status="success"></el-progress>
-          </div>
-          <div>Sadness
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="sadness"></el-progress>
-          </div>
-          <div>Surprise
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="surprise"></el-progress>
-          </div>
-          <div>Valence
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="valence"></el-progress>
-          </div>
-        </el-collapse-item>
-        <el-collapse-item title="expressions" name="3">
-          <div>Attention
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="attention"></el-progress>
-          </div>
-          <div>Brow Furrow
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="browFurrow"></el-progress>
-          </div>
-          <div>Brow Raise
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="browRaise"></el-progress>
-          </div>
-          <div>Cheek Raise
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="cheekRaise"></el-progress>
-          </div>
-          <div>ChinRaise
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="chinRaise"></el-progress>
-          </div>
-          <div>Dimpler
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="dimpler"></el-progress>
-          </div>
-          <div>Eye Closure
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="eyeClosure"></el-progress>
-          </div>
-          <div>Eye Widen
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="eyeWiden"></el-progress>
-          </div>
-          <div>Inner BrowRaise
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="innerBrowRaise"></el-progress>
-          </div>
-          <div>Jaw Drop
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="jawDrop"></el-progress>
-          </div>
-          <div>Lid Tighten
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="lidTighten"></el-progress>
-          </div>
-          <div>Lip Corner Depressor
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="lipCornerDepressor"></el-progress>
-          </div>
-          <div>Lip Press
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="lipPress"></el-progress>
-          </div>
-          <div>Lip Pucker
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="lipPucker"></el-progress>
-          </div>
-          <div>Lip Stretch
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="lipStretch"></el-progress>
-          </div>
-          <div>Lip Suck
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="lipSuck"></el-progress>
-          </div>
-          <div>Mouth Open
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="mouthOpen"></el-progress>
-          </div>
-          <div>Nose Wrinkle
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="noseWrinkle"></el-progress>
-          </div>
-          <div>Smile
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="smile"></el-progress>
-          </div>
-          <div>Smirk
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="smirk"></el-progress>
-          </div>
-          <div>Upper Lip Raise
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="upperLipRaise"></el-progress>
-          </div>
-        </el-collapse-item>
+        <appearance :appearance="appearance"></appearance>
+        <emotions :emotions="emotions"></emotions>
+        <expressions :expressions="expressions"></expressions>
       </el-collapse>
     </div>
     <footer>
@@ -124,6 +22,9 @@
 
 <script>
 import $ from 'jquery'
+import Appearance from '@/components/Appearance'
+import Emotions from '@/components/Emotions'
+import Expressions from '@/components/Expressions'
 
 //Draw the detected facial feature points on the image
 function drawFeaturePoints(vm, img, emoji, featurePoints) {
@@ -152,51 +53,61 @@ function drawFeaturePoints(vm, img, emoji, featurePoints) {
 
 export default {
   name: 'app',
+  components: {
+    Appearance,
+    Emotions,
+    Expressions,
+  },
   data() {
     return {
-      detector: null,
       loading: false,
+      detector: null,
       activeNames: ['0'],
       color: '#409EFF',
-      gender: '',
-      age: '',
-      ethnicity: '',
-      glasses: '',
-      anger: 0,
-      contempt: 0,
-      disgust: 0,
-      engagement: 0,
-      fear: 0,
-      joy: 0,
-      sadness: 0,
-      surprise: 0,
-      valence: 0,
-      attention: 0,
-      browFurrow: 0,
-      browRaise: 0,
-      cheekRaise: 0,
-      chinRaise: 0,
-      dimpler: 0,
-      eyeClosure: 0,
-      eyeWiden: 0,
-      innerBrowRaise: 0,
-      jawDrop: 0,
-      lidTighten: 0,
-      lipCornerDepressor: 0,
-      lipPress: 0,
-      lipPucker: 0,
-      lipStretch: 0,
-      lipSuck: 0,
-      mouthOpen: 0,
-      noseWrinkle: 0,
-      smile: 0,
-      smirk: 0,
-      upperLipRaise: 0,
+      appearance: {
+        gender: '',
+        age: '',
+        ethnicity: '',
+        glasses: '',
+      },
+      emotions: {
+        anger: 0,
+        contempt: 0,
+        disgust: 0,
+        engagement: 0,
+        fear: 0,
+        joy: 0,
+        sadness: 0,
+        surprise: 0,
+        valence: 0,
+      },
+      expressions: {
+        attention: 0,
+        browFurrow: 0,
+        browRaise: 0,
+        cheekRaise: 0,
+        chinRaise: 0,
+        dimpler: 0,
+        eyeClosure: 0,
+        eyeWiden: 0,
+        innerBrowRaise: 0,
+        jawDrop: 0,
+        lidTighten: 0,
+        lipCornerDepressor: 0,
+        lipPress: 0,
+        lipPucker: 0,
+        lipStretch: 0,
+        lipSuck: 0,
+        mouthOpen: 0,
+        noseWrinkle: 0,
+        smile: 0,
+        smirk: 0,
+        upperLipRaise: 0,
+      },
     }
   },
   mounted() {
     const that = this
-    console.log(this.$loading)
     const divRoot = $('#canvas')[0]
     const width = 640
     const height = 480
@@ -245,7 +156,6 @@ export default {
     })
 
     this.detector.addEventListener('onWebcamConnectFailure', function(e) {
-      console.log(e.message)
       that.$notify({
         title: 'Failure',
         message: 'Webcam access denied',
@@ -262,7 +172,6 @@ export default {
       timestamp
     ) {
       if (faces.length > 0) {
-        console.log(faces)
         // draw the feature points
         drawFeaturePoints(
           that,
@@ -271,42 +180,11 @@ export default {
           faces[0].featurePoints
         )
         // appearance
-        that.gender = faces[0].appearance.gender
-        that.age = faces[0].appearance.age
-        that.ethnicity = faces[0].appearance.ethnicity
-        that.glasses = faces[0].appearance.glasses
+        that.appearance = faces[0].appearance
         // emotions
-        that.anger = faces[0].emotions.anger
-        that.contempt = faces[0].emotions.contempt
-        that.disgust = faces[0].emotions.disgust
-        that.engagement = faces[0].emotions.engagement
-        that.fear = faces[0].emotions.fear
-        that.joy = faces[0].emotions.joy
-        that.sadness = faces[0].emotions.sadness
-        that.surprise = faces[0].emotions.surprise
-        that.valence = faces[0].emotions.valence
+        that.emotions = faces[0].emotions
         // expressions
-        that.attention = faces[0].expressions.attention
-        that.browFurrow = faces[0].expressions.browFurrow
-        that.browRaise = faces[0].expressions.browRaise
-        that.cheekRaise = faces[0].expressions.cheekRaise
-        that.chinRaise = faces[0].expressions.chinRaise
-        that.dimpler = faces[0].expressions.dimpler
-        that.eyeClosure = faces[0].expressions.eyeClosure
-        that.eyeWiden = faces[0].expressions.eyeWiden
-        that.innerBrowRaise = faces[0].expressions.innerBrowRaise
-        that.jawDrop = faces[0].expressions.jawDrop
-        that.lidTighten = faces[0].expressions.lidTighten
-        that.lipCornerDepressor = faces[0].expressions.lipCornerDepressor
-        that.lipPress = faces[0].expressions.lipPress
-        that.lipPucker = faces[0].expressions.lipPucker
-        that.lipStretch = faces[0].expressions.lipStretch
-        that.lipSuck = faces[0].expressions.lipSuck
-        that.mouthOpen = faces[0].expressions.mouthOpen
-        that.noseWrinkle = faces[0].expressions.noseWrinkle
-        that.smile = faces[0].expressions.smile
-        that.smirk = faces[0].expressions.smirk
-        that.upperLipRaise = faces[0].expressions.upperLipRaise
+        that.expressions = faces[0].expressions
       }
     })
   },
