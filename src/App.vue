@@ -7,7 +7,7 @@
       <v-container fluid fill-height>
         <v-layout row wrap justify-center align-center>
           <v-flex xs12>
-            <v-alert :value="booted" dismissible type="success">Booted!</v-alert>
+            <v-alert :value="booted" dismissible type="success">Booted successfully!</v-alert>
             <v-alert :value="failed" dismissible type="error">Failed to load correctly.</v-alert>
             <v-alert :value="webcamOk" dismissible type="info">This may take few minutes</v-alert>
             <v-alert :value="webcamOk" dismissible type="info">Webcam access allowed...</v-alert>
@@ -31,9 +31,12 @@
       </v-container>
     </v-content>
     <v-footer app fixed>
-      <span>
-        <a href="https://github.com/gimyboya/real-imoji" target="blank">Github</a>
-      </span>
+      <v-btn href="https://github.com/gimyboya/real-imoji" target="blank">
+        <v-icon v-text="'mdi-github-circle'"></v-icon>
+      </v-btn>
+      <v-btn href="https://twitter.com/gimyboya" target="blank">
+        <v-icon v-text="'mdi-twitter'"></v-icon>
+      </v-btn>
     </v-footer>
   </v-app>
 </template>
@@ -174,4 +177,8 @@ export default {
 </script>
 
 <style>
+footer {
+  display: flex;
+  justify-content: center;
+}
 </style>
