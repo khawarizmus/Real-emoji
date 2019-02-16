@@ -1,8 +1,8 @@
 <template>
-  <v-card class="elevation-16 mx-auto" width="680">
+  <v-card class="player elevation-16 mx-auto" max-width="680">
     <v-card-text>
       <div v-show="!loading" id="canvas"></div>
-      <v-layout v-show="loading" justify-center align-center>
+      <v-layout max-width="680" v-show="loading" justify-center align-center>
         <v-progress-circular :size="70" :width="7" color="white" indeterminate></v-progress-circular>
       </v-layout>
     </v-card-text>
@@ -63,3 +63,11 @@ export default {
   },
 }
 </script>
+
+<style>
+#canvas {
+  display: flex;
+  justify-content: center;
+}
+</style>
+

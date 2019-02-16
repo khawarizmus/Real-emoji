@@ -6,17 +6,17 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout row wrap justify-center align-center>
-          <v-flex xs12>
+          <v-flex sm12>
             <v-alert :value="booted" dismissible type="success">Booted successfully!</v-alert>
             <v-alert :value="failed" dismissible type="error">Failed to load correctly.</v-alert>
             <v-alert :value="webcamOk" dismissible type="info">This may take few minutes</v-alert>
             <v-alert :value="webcamOk" dismissible type="info">Webcam access allowed...</v-alert>
             <v-alert :value="webcamNotOk" dismissible type="error">Webcam access denied.</v-alert>
           </v-flex>
-          <v-flex xs6>
+          <v-flex class="player-wrapper" sm12 md6>
             <webcam-player></webcam-player>
           </v-flex>
-          <v-flex xs6>
+          <v-flex sm12 md6>
             <v-card class="elevation-16 mx-auto">
               <v-card-text>
                 <appearance></appearance>
@@ -24,7 +24,7 @@
               </v-card-text>
             </v-card>
           </v-flex>
-          <v-flex>
+          <v-flex sm12>
             <expressions></expressions>
           </v-flex>
         </v-layout>
@@ -68,8 +68,14 @@ export default {
   mounted() {
     const that = this
     const divRoot = $('#canvas')[0]
-    const width = 640
-    const height = 480
+    // TODO: calculate the width according to the size of the device
+    console.log('width:', this.computedWidth)
+    console.log('inner width:', $('.player').innerWidth())
+    const width = this.computedWidth
+    console.log('height:', this.computedHeight)
+    const height = this.computedHeight
+    // const width = 640
+    // const height = 480
     /*
       Face detector configuration - If not specified, defaults to F
       affdex.FaceDetectorMode.LARGE_FACES
@@ -140,6 +146,12 @@ export default {
     detector() {
       return this.$store.getters.getDetector
     },
+    computedWidth() {
+      return $('.player').width() - 40
+    },
+    computedHeight() {
+      return $('.player').width() / 1.33
+    },
   },
   methods: {
     drawFeaturePoints(vm, img, emoji, featurePoints) {
@@ -152,11 +164,11 @@ export default {
       contxt.strokeStyle = '#42b983'
       for (var id in featurePoints) {
         if (id == 11) {
-          contxt.font = '11em Arial'
+          contxt.font = '50px Arial'
           contxt.fillText(
             emoji,
-            featurePoints[id].x - 300,
-            featurePoints[id].y + 120
+            featurePoints[id].x + -30,
+            featurePoints[id].y + -60
           )
         } else {
           contxt.beginPath()
@@ -177,6 +189,9 @@ export default {
 </script>
 
 <style>
+.player-wrapper {
+  width: 100%;
+}
 footer {
   display: flex;
   justify-content: center;

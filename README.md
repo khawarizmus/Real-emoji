@@ -47,11 +47,6 @@ Expressions
 - smirk
 - upperLipRaise
 
-# TODO:
-
-[ ] Better UI
-[ ] Loading fullscreen
-
 # Developers:
 
 Once you clone this repo you can run the following commands
