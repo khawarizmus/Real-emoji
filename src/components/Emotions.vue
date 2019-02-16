@@ -1,48 +1,59 @@
 <template>
-  <el-collapse-item title="emotions" name="2">
-    <div>Anger
-      <el-progress
-        :text-inside="true"
-        :stroke-width="18"
-        :percentage="emotions.anger"
-        status="exception"
-      ></el-progress>
-    </div>
-    <div>Contempt
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="emotions.contempt"></el-progress>
-    </div>
-    <div>Disgust
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="emotions.disgust"></el-progress>
-    </div>
-    <div>Engagement
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="emotions.engagement"></el-progress>
-    </div>
-    <div>Fear
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="emotions.fear"></el-progress>
-    </div>
-    <div>Joy
-      <el-progress
-        :text-inside="true"
-        :stroke-width="18"
-        :percentage="emotions.joy"
-        status="success"
-      ></el-progress>
-    </div>
-    <div>Sadness
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="emotions.sadness"></el-progress>
-    </div>
-    <div>Surprise
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="emotions.surprise"></el-progress>
-    </div>
-    <div>Valence
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="emotions.valence"></el-progress>
-    </div>
-  </el-collapse-item>
+  <v-card class="elevation-0">
+    <v-card-title>
+      <h4>Appearance</h4>
+    </v-card-title>
+    <v-divider></v-divider>
+    <v-card-text>
+      <v-layout wrap justify-center>
+        <v-flex mx-1 xs5>
+          <div>Anger</div>
+          <v-progress-linear height="18" v-model="emotions.anger" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Contempt</div>
+          <v-progress-linear height="18" v-model="emotions.contempt" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Disgust</div>
+          <v-progress-linear height="18" v-model="emotions.disgust" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Engagement</div>
+          <v-progress-linear height="18" v-model="emotions.engagement" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Fear</div>
+          <v-progress-linear height="18" v-model="emotions.fear" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Joy</div>
+          <v-progress-linear height="18" v-model="emotions.joy" status="success" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Sadness</div>
+          <v-progress-linear height="18" v-model="emotions.sadness" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Surprise</div>
+          <v-progress-linear height="18" v-model="emotions.surprise" color="#42b983"></v-progress-linear>
+        </v-flex>
+        <v-flex mx-1 xs5>
+          <div>Valence</div>
+          <v-progress-linear height="18" v-model="emotions.valence" color="#42b983"></v-progress-linear>
+        </v-flex>
+      </v-layout>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
 export default {
-  props: ['emotions'],
+  computed: {
+    emotions() {
+      return this.$store.getters.getEmotions
+    },
+  },
 }
 </script>
 

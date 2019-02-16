@@ -2,17 +2,16 @@
 
 Demo [here](https://real-imoji.netlify.com)
 
-This project showcase a real time emotion detection by using Affectiva SDK.
-The SDK is able to detect the following features:
+This project showcase a real time emotion detection, where we try to detect the following features from the face:
 
-Appearance:
+Appearance
 
 - gender
 - age
 - ethnicity
 - glasses
 
-Emotions:
+Emotions
 
 - anger
 - contempt
@@ -24,7 +23,7 @@ Emotions:
 - surprise
 - valence
 
-Expressions:
+Expressions
 
 - attention
 - browFurrow
@@ -50,8 +49,8 @@ Expressions:
 
 # TODO:
 
-[] - Better UI
-[] - Loading fullscreen
+[ ] Better UI
+[ ] Loading fullscreen
 
 # Developers:
 

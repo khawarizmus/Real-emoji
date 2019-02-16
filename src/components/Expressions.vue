@@ -1,78 +1,78 @@
 <template>
-  <el-collapse-item title="expressions" name="3">
+  <div>
     <div>Attention
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.attention"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.attention"></v-progress-linear>
     </div>
     <div>Brow Furrow
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.browFurrow"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.browFurrow"></v-progress-linear>
     </div>
     <div>Brow Raise
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.browRaise"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.browRaise"></v-progress-linear>
     </div>
     <div>Cheek Raise
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.cheekRaise"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.cheekRaise"></v-progress-linear>
     </div>
     <div>ChinRaise
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.chinRaise"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.chinRaise"></v-progress-linear>
     </div>
     <div>Dimpler
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.dimpler"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.dimpler"></v-progress-linear>
     </div>
     <div>Eye Closure
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.eyeClosure"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.eyeClosure"></v-progress-linear>
     </div>
     <div>Eye Widen
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.eyeWiden"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.eyeWiden"></v-progress-linear>
     </div>
     <div>Inner BrowRaise
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.innerBrowRaise"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.innerBrowRaise"></v-progress-linear>
     </div>
     <div>Jaw Drop
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.jawDrop"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.jawDrop"></v-progress-linear>
     </div>
     <div>Lid Tighten
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.lidTighten"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.lidTighten"></v-progress-linear>
     </div>
     <div>Lip Corner Depressor
-      <el-progress
-        :text-inside="true"
-        :stroke-width="18"
-        :percentage="expressions.lipCornerDepressor"
-      ></el-progress>
+      <v-progress-linear height="18" v-model="expressions.lipCornerDepressor"></v-progress-linear>
     </div>
     <div>Lip Press
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.lipPress"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.lipPress"></v-progress-linear>
     </div>
     <div>Lip Pucker
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.lipPucker"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.lipPucker"></v-progress-linear>
     </div>
     <div>Lip Stretch
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.lipStretch"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.lipStretch"></v-progress-linear>
     </div>
     <div>Lip Suck
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.lipSuck"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.lipSuck"></v-progress-linear>
     </div>
     <div>Mouth Open
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.mouthOpen"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.mouthOpen"></v-progress-linear>
     </div>
     <div>Nose Wrinkle
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.noseWrinkle"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.noseWrinkle"></v-progress-linear>
     </div>
     <div>Smile
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.smile"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.smile"></v-progress-linear>
     </div>
     <div>Smirk
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.smirk"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.smirk"></v-progress-linear>
     </div>
     <div>Upper Lip Raise
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="expressions.upperLipRaise"></el-progress>
+      <v-progress-linear height="18" v-model="expressions.upperLipRaise"></v-progress-linear>
     </div>
-  </el-collapse-item>
+  </div>
 </template>
 
 <script>
 export default {
-  props: ['expressions'],
+  computed: {
+    expressions() {
+      return this.$store.getters.getExpressions
+    },
+  },
 }
 </script>
 
